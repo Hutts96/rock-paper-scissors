@@ -41,3 +41,50 @@ function playRound(computerSeletion, playerSelection) {
             }
     }
 }
+
+function isValidSelection(playerSelection) {
+    playerSelection = playerSelection.toLowerCase();
+    switch (playerSelection) {
+        case 'rock':
+        case 'paper':
+        case 'scissors':
+            return true;
+        default:
+            return false;
+    }
+}
+
+function game() {
+    let computerScore = 0;
+    let playerScore = 0;
+    let playerSelection;
+    let result;
+
+    for (let i = 0; i < 5; i++) {
+
+        do {
+            playerSelection = prompt('Rock Paper Scissors:');
+            if (!isValidSelection(playerSelection)) {
+                alert('please choose a valid move');
+            }
+        } while (!isValidSelection(playerSelection))
+
+        result = playRound(getComputerChoice(), playerSelection);
+        console.log(result);
+
+        if (result.charAt(4) === 'w') {
+            playerScore++;
+        } else if (result.charAt(4) === 'l') {
+            computerScore++;
+        }
+    }
+
+    if (playerScore > computerScore) {
+        console.log('You have won\nComputer : ' + computerScore + '\nYou : ' + playerScore);
+    } else if (playerScore < computerScore) {
+        console.log('You have lost\nComputer : ' + computerScore + '\nYou : ' + playerScore);
+    } else {
+        console.log('It\'s a tie\nComputer : ' + computerScore + '\nYou : ' + playerScore);
+    }
+}
+game();
