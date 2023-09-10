@@ -9,9 +9,10 @@ function getComputerChoice() {
     }
 }
 
-function playRound(computerSeletion, playerSelection) {
-    playerSelection = playerSelection.toLowerCase();
-    switch (computerSeletion) {
+function playRound(playerSelection) {
+    let computerSelection = getComputerChoice();
+    computerSec.textContent = `Computer : ${computerSelection}`;
+    switch (computerSelection) {
         case 'Rock':
             switch (playerSelection) {
                 case 'rock':
@@ -42,7 +43,7 @@ function playRound(computerSeletion, playerSelection) {
     }
 }
 
-function isValidSelection(playerSelection) {
+/*function isValidSelection(playerSelection) {
     playerSelection = playerSelection.toLowerCase();
     switch (playerSelection) {
         case 'rock':
@@ -52,39 +53,64 @@ function isValidSelection(playerSelection) {
         default:
             return false;
     }
+}*/
+function resetScore() {
+    playerScore = 0;
+    computerScore = 0;
 }
 
-function game() {
-    let computerScore = 0;
-    let playerScore = 0;
-    let playerSelection;
+function game(playerSelection) {
     let result;
 
-    for (let i = 0; i < 5; i++) {
 
-        do {
-            playerSelection = prompt('Rock Paper Scissors:');
-            if (!isValidSelection(playerSelection)) {
-                alert('please choose a valid move');
-            }
-        } while (!isValidSelection(playerSelection))
-
-        result = playRound(getComputerChoice(), playerSelection);
-        console.log(result);
-
-        if (result.charAt(4) === 'w') {
-            playerScore++;
-        } else if (result.charAt(4) === 'l') {
-            computerScore++;
+    /*do {
+        playerSelection = prompt('Rock Paper Scissors:');
+        if (!isValidSelection(playerSelection)) {
+            alert('please choose a valid move');
         }
-    }
+    } while (!isValidSelection(playerSelection))*/
 
-    if (playerScore > computerScore) {
-        console.log('You have won\nComputer : ' + computerScore + '\nYou : ' + playerScore);
-    } else if (playerScore < computerScore) {
-        console.log('You have lost\nComputer : ' + computerScore + '\nYou : ' + playerScore);
-    } else {
-        console.log('It\'s a tie\nComputer : ' + computerScore + '\nYou : ' + playerScore);
+    result = playRound(playerSelection);
+    winner.textContent = '';
+    resultDiv.textContent = result;
+
+
+
+    if (result.charAt(4) === 'w') {
+        playerScore++;
+    } else if (result.charAt(4) === 'l') {
+        computerScore++;
+    }
+    computer.textContent = `Computer : ${computerScore}`;
+    you.textContent = `You : ${playerScore}`;
+
+    if (playerScore + computerScore === 5) {
+        if (playerScore > computerScore) {
+            winner.textContent = 'You have won!';
+        } else {
+            winner.textContent = 'You have lost!';
+        }
+        resetScore();
     }
 }
-game();
+
+const buttons = document.querySelectorAll('button');
+let computerScore = 0;
+let playerScore = 0;
+const container = document.querySelector('.container');
+const computerSec = document.createElement('div');
+const resultDiv = document.createElement('div');
+const currentScores = document.createElement('div');
+const you = document.createElement('div');
+const computer = document.createElement('div');
+const winner = document.createElement('div');
+winner.style.fontSize = 'larger';
+
+currentScores.appendChild(you);
+currentScores.appendChild(computer);
+container.appendChild(computerSec);
+container.appendChild(resultDiv);
+container.appendChild(currentScores);
+container.appendChild(winner);
+//add changing scores
+buttons.forEach(button => button.addEventListener('click', e => game(e.target.className)));
